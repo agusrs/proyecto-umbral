@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*.log
+*.pid
+.env
+Fraude.csv
+artifacts/*.pending.*
+output/qa/
+.playwright-mcp/
+output/playwright/

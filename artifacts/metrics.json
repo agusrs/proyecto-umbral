@@ -1,0 +1,458 @@
+{
+  "model_version": "8544ce2ca09c",
+  "trained_at": "2026-10-21T19:36:19.680000+00:00",
+  "config": {
+    "max_depth": 20,
+    "min_samples_leaf": 10,
+    "class_weight": null,
+    "random_state": 42,
+    "threshold": 0.5,
+    "remainder_fraction": 0.01
+  },
+  "features": {
+    "raw": [
+      "amount",
+      "oldbalanceOrg",
+      "oldbalanceDest",
+      "type"
+    ],
+    "derived": [
+      "saldo_estimado_origen",
+      "saldo_estimado_destino",
+      "proporcion_saldo_salida",
+      "monto_supera_saldo",
+      "cuenta_casi_vacia",
+      "origen_sin_saldo",
+      "destino_sin_informacion"
+    ],
+    "encoded": 15
+  },
+  "tree": {
+    "depth": 14,
+    "leaves": 39,
+    "nodes": 77
+  },
+  "source": {
+    "notebook": "output/jupyter-notebook/03_arbol_decision_variables_derivadas.ipynb",
+    "notebook_sha256": "7079354ff5db0e00286d3b7180ed52abfdfa876c166530ca0a249f674085f253",
+    "csv_name": "Fraude.csv",
+    "csv_sha256": "37b5ee8f2788cd98874c929be451d792bbf89c052353f784792b3d2bfa05ad80",
+    "libraries": {
+      "scikit-learn": "1.9.1",
+      "pandas": "3.0.3",
+      "numpy": "2.4.5",
+      "joblib": "1.6.0"
+    }
+  },
+  "dataset": {
+    "rows": 1362621,
+    "frauds": 8213,
+    "fraud_rate": 0.006027354634927834,
+    "by_type": [
+      {
+        "type": "CASH_IN",
+        "rows": 301286,
+        "frauds": 0
+      },
+      {
+        "type": "CASH_OUT",
+        "rows": 467280,
+        "frauds": 4116
+      },
+      {
+        "type": "DEBIT",
+        "rows": 9734,
+        "frauds": 0
+      },
+      {
+        "type": "PAYMENT",
+        "rows": 465158,
+        "frauds": 0
+      },
+      {
+        "type": "TRANSFER",
+        "rows": 119163,
+        "frauds": 4097
+      }
+    ]
+  },
+  "splits": {
+    "train": {
+      "rows": 817572,
+      "frauds": 4928,
+      "accuracy": 0.9999669753856542,
+      "precision": 1.0,
+      "recall": 0.9945211038961039,
+      "f1": 0.9972530267575542,
+      "average_precision": 0.9999106664962073,
+      "roc_auc": 0.9999996238179197,
+      "confusion_matrix": {
+        "tn": 812644,
+        "fp": 0,
+        "fn": 27,
+        "tp": 4901
+      }
+    },
+    "validation": {
+      "rows": 272524,
+      "frauds": 1642,
+      "accuracy": 0.999985322393624,
+      "precision": 1.0,
+      "recall": 0.997563946406821,
+      "f1": 0.998780487804878,
+      "average_precision": 0.997578624013197,
+      "roc_auc": 0.9987816989155854,
+      "confusion_matrix": {
+        "tn": 270882,
+        "fp": 0,
+        "fn": 4,
+        "tp": 1638
+      }
+    },
+    "test": {
+      "rows": 272525,
+      "frauds": 1643,
+      "accuracy": 0.9999889918356114,
+      "precision": 1.0,
+      "recall": 0.9981740718198417,
+      "f1": 0.9990862016448371,
+      "average_precision": 0.9987741599815885,
+      "roc_auc": 0.9993911617936355,
+      "confusion_matrix": {
+        "tn": 270882,
+        "fp": 0,
+        "fn": 3,
+        "tp": 1640
+      }
+    }
+  },
+  "input_ranges": {
+    "amount": {
+      "min": 0.0,
+      "max": 19953778.06
+    },
+    "oldbalanceOrg": {
+      "min": 0.0,
+      "max": 57316255.05
+    },
+    "oldbalanceDest": {
+      "min": 0.0,
+      "max": 355380483.53
+    }
+  },
+  "feature_importances": [
+    {
+      "feature": "cuenta_casi_vacia",
+      "importance": 0.8816435555954236
+    },
+    {
+      "feature": "saldo_estimado_origen",
+      "importance": 0.09777479464316613
+    },
+    {
+      "feature": "amount",
+      "importance": 0.010404803549844584
+    },
+    {
+      "feature": "oldbalanceOrg",
+      "importance": 0.009181120640085635
+    },
+    {
+      "feature": "proporcion_saldo_salida",
+      "importance": 0.0006289260172221273
+    },
+    {
+      "feature": "oldbalanceDest",
+      "importance": 0.0002045982585329405
+    },
+    {
+      "feature": "saldo_estimado_destino",
+      "importance": 0.00016211719607405384
+    },
+    {
+      "feature": "type_TRANSFER",
+      "importance": 7.871812272253277e-08
+    },
+    {
+      "feature": "type_CASH_OUT",
+      "importance": 5.381528083697041e-09
+    },
+    {
+      "feature": "monto_supera_saldo",
+      "importance": 0.0
+    },
+    {
+      "feature": "origen_sin_saldo",
+      "importance": 0.0
+    },
+    {
+      "feature": "destino_sin_informacion",
+      "importance": 0.0
+    },
+    {
+      "feature": "type_CASH_IN",
+      "importance": 0.0
+    },
+    {
+      "feature": "type_DEBIT",
+      "importance": 0.0
+    },
+    {
+      "feature": "type_PAYMENT",
+      "importance": 0.0
+    }
+  ],
+  "validation_thresholds": [
+    {
+      "threshold": 0.1,
+      "rows": 272524,
+      "frauds": 1642,
+      "accuracy": 0.9998128605187067,
+      "precision": 0.972106824925816,
+      "recall": 0.997563946406821,
+      "f1": 0.9846708746618575,
+      "average_precision": 0.997578624013197,
+      "roc_auc": 0.9987816989155854,
+      "confusion_matrix": {
+        "tn": 270835,
+        "fp": 47,
+        "fn": 4,
+        "tp": 1638
+      }
+    },
+    {
+      "threshold": 0.25,
+      "rows": 272524,
+      "frauds": 1642,
+      "accuracy": 0.9999669753856542,
+      "precision": 0.996956786366403,
+      "recall": 0.997563946406821,
+      "f1": 0.9972602739726028,
+      "average_precision": 0.997578624013197,
+      "roc_auc": 0.9987816989155854,
+      "confusion_matrix": {
+        "tn": 270877,
+        "fp": 5,
+        "fn": 4,
+        "tp": 1638
+      }
+    },
+    {
+      "threshold": 0.5,
+      "rows": 272524,
+      "frauds": 1642,
+      "accuracy": 0.999985322393624,
+      "precision": 1.0,
+      "recall": 0.997563946406821,
+      "f1": 0.998780487804878,
+      "average_precision": 0.997578624013197,
+      "roc_auc": 0.9987816989155854,
+      "confusion_matrix": {
+        "tn": 270882,
+        "fp": 0,
+        "fn": 4,
+        "tp": 1638
+      }
+    },
+    {
+      "threshold": 0.75,
+      "rows": 272524,
+      "frauds": 1642,
+      "accuracy": 0.999985322393624,
+      "precision": 1.0,
+      "recall": 0.997563946406821,
+      "f1": 0.998780487804878,
+      "average_precision": 0.997578624013197,
+      "roc_auc": 0.9987816989155854,
+      "confusion_matrix": {
+        "tn": 270882,
+        "fp": 0,
+        "fn": 4,
+        "tp": 1638
+      }
+    },
+    {
+      "threshold": 0.9,
+      "rows": 272524,
+      "frauds": 1642,
+      "accuracy": 0.999985322393624,
+      "precision": 1.0,
+      "recall": 0.997563946406821,
+      "f1": 0.998780487804878,
+      "average_precision": 0.997578624013197,
+      "roc_auc": 0.9987816989155854,
+      "confusion_matrix": {
+        "tn": 270882,
+        "fp": 0,
+        "fn": 4,
+        "tp": 1638
+      }
+    },
+    {
+      "threshold": 0.95,
+      "rows": 272524,
+      "frauds": 1642,
+      "accuracy": 0.999985322393624,
+      "precision": 1.0,
+      "recall": 0.997563946406821,
+      "f1": 0.998780487804878,
+      "average_precision": 0.997578624013197,
+      "roc_auc": 0.9987816989155854,
+      "confusion_matrix": {
+        "tn": 270882,
+        "fp": 0,
+        "fn": 4,
+        "tp": 1638
+      }
+    },
+    {
+      "threshold": 0.98,
+      "rows": 272524,
+      "frauds": 1642,
+      "accuracy": 0.999985322393624,
+      "precision": 1.0,
+      "recall": 0.997563946406821,
+      "f1": 0.998780487804878,
+      "average_precision": 0.997578624013197,
+      "roc_auc": 0.9987816989155854,
+      "confusion_matrix": {
+        "tn": 270882,
+        "fp": 0,
+        "fn": 4,
+        "tp": 1638
+      }
+    },
+    {
+      "threshold": 0.99,
+      "rows": 272524,
+      "frauds": 1642,
+      "accuracy": 0.999985322393624,
+      "precision": 1.0,
+      "recall": 0.997563946406821,
+      "f1": 0.998780487804878,
+      "average_precision": 0.997578624013197,
+      "roc_auc": 0.9987816989155854,
+      "confusion_matrix": {
+        "tn": 270882,
+        "fp": 0,
+        "fn": 4,
+        "tp": 1638
+      }
+    }
+  ],
+  "precision_recall_validation": [
+    {
+      "recall": 1.0,
+      "precision": 0.006025157417328382
+    },
+    {
+      "recall": 0.997563946406821,
+      "precision": 0.9640965273690406
+    },
+    {
+      "recall": 0.997563946406821,
+      "precision": 0.9663716814159292
+    },
+    {
+      "recall": 0.997563946406821,
+      "precision": 0.9692307692307692
+    },
+    {
+      "recall": 0.997563946406821,
+      "precision": 0.972106824925816
+    },
+    {
+      "recall": 0.997563946406821,
+      "precision": 0.9951397326852977
+    },
+    {
+      "recall": 0.997563946406821,
+      "precision": 0.996956786366403
+    },
+    {
+      "recall": 0.997563946406821,
+      "precision": 0.9981718464351006
+    },
+    {
+      "recall": 0.997563946406821,
+      "precision": 1.0
+    },
+    {
+      "recall": 0.0,
+      "precision": 1.0
+    }
+  ],
+  "examples": [
+    {
+      "id": "payment",
+      "name": "Pago a comercio",
+      "transaction": {
+        "amount": 11298.59,
+        "oldbalanceOrg": 189.0,
+        "oldbalanceDest": 0.0,
+        "type": "PAYMENT"
+      },
+      "actual_label": 0
+    },
+    {
+      "id": "transfer",
+      "name": "Transferencia con fraude real",
+      "transaction": {
+        "amount": 934314.89,
+        "oldbalanceOrg": 934314.89,
+        "oldbalanceDest": 0.0,
+        "type": "TRANSFER"
+      },
+      "actual_label": 1
+    },
+    {
+      "id": "cash_out",
+      "name": "Retiro legítimo",
+      "transaction": {
+        "amount": 643706.17,
+        "oldbalanceOrg": 0.0,
+        "oldbalanceDest": 9844590.98,
+        "type": "CASH_OUT"
+      },
+      "actual_label": 0
+    },
+    {
+      "id": "cash_in",
+      "name": "Ingreso de dinero",
+      "transaction": {
+        "amount": 169443.08,
+        "oldbalanceOrg": 121939.0,
+        "oldbalanceDest": 2125944.92,
+        "type": "CASH_IN"
+      },
+      "actual_label": 0
+    },
+    {
+      "id": "review",
+      "name": "Caso con puntaje intermedio",
+      "transaction": {
+        "amount": 95036.14,
+        "oldbalanceOrg": 610.0,
+        "oldbalanceDest": 0.0,
+        "type": "CASH_OUT"
+      },
+      "actual_label": 0
+    }
+  ],
+  "limitations": [
+    "La notebook documenta un sesgo temporal de selección; por eso step no se utiliza como entrada.",
+    "La prueba ya fue consultada durante el desarrollo académico y no es completamente independiente.",
+    "El puntaje es la proporción de fraudes en la hoja del árbol, no una probabilidad calibrada de fraude real.",
+    "Los saldos estimados son hipótesis contables sin comisiones ni movimientos simultáneos."
+  ],
+  "notebook_reference": {
+    "test_confusion_matrix": {
+      "tn": 270882,
+      "fp": 0,
+      "fn": 3,
+      "tp": 1640
+    },
+    "matches_test_counts": true
+  },
+  "model_sha256": "6ecb2356b227859dcc07182bce6c11bead1e0a1540ad3f7d23e762d341fa8f4b"
+}

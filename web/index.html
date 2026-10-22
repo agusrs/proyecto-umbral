@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Laboratorio de detección de fraude: probá operaciones y explorá un árbol de decisión con variables derivadas.">
+<title>Umbral · Laboratorio de fraude</title><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/static/styles.css"><script src="/static/app.js" defer></script>
+</head><body>
+<a class="skip-link" href="#main">Saltar al contenido</a>
+<header class="site-header"><div class="header-inner">
+<a href="#simulador" class="brand" aria-label="Umbral, inicio"><span class="brand-mark" aria-hidden="true">u<span>·</span></span><span>umbral<span class="brand-sub">Modelo de detección de fraude</span></span></a>
+<nav class="navigation" role="tablist" aria-label="Secciones">
+<button id="tab-simulador" role="tab" aria-controls="simulador" aria-selected="true" data-tab="simulador">Simulador</button>
+<button id="tab-metricas" role="tab" aria-controls="metricas" aria-selected="false" tabindex="-1" data-tab="metricas">Rendimiento</button>
+<button id="tab-lote" role="tab" aria-controls="lote" aria-selected="false" tabindex="-1" data-tab="lote">Evaluación por lote</button>
+<button id="tab-modelo" role="tab" aria-controls="modelo" aria-selected="false" tabindex="-1" data-tab="modelo">El modelo</button></nav>
+<div class="api-status" id="api-status" role="status"><span class="status-dot"></span>Conectando API</div>
+</div></header>
+<main id="main" class="main-wrap">
+<div id="global-error" class="notice error-notice" role="alert" hidden><span id="global-error-text"></span><button id="retry-api" class="text-button">Reintentar</button></div>
+<section id="simulador" role="tabpanel" aria-labelledby="tab-simulador">
+<div class="page-intro"><div><div class="eyebrow"><span class="tiny-line"></span> SIMULADOR DEL MODELO</div><h1>Del dato a la <em>decisión.</em></h1><p>Ingresá una operación y explorá cómo el modelo evalúa sus señales de fraude.</p></div></div>
+<div class="simulator-grid">
+<section class="card input-card" aria-labelledby="case-title">
+<div class="section-heading"><div><span class="step-label">01 / ENTRADA</span><h2 id="case-title">Nueva operación</h2></div><button type="button" id="reset-form" class="text-button">Limpiar</button></div>
+<form id="case-form">
+<label for="type">Tipo de operación</label><div class="select-wrap"><select id="type" name="type" required><option value="TRANSFER">TRANSFER · Transferencia</option><option value="CASH_OUT">CASH_OUT · Retiro</option><option value="CASH_IN">CASH_IN · Ingreso</option><option value="PAYMENT">PAYMENT · Pago a comercio</option><option value="DEBIT">DEBIT · Débito</option></select></div>
+<div class="field"><label for="amount">Monto de la operación</label><div class="number-input"><span aria-hidden="true">$</span><input id="amount" name="amount" type="number" min="0" max="1000000000000" step="any" inputmode="decimal" placeholder="Ej. 10000" required></div></div>
+<div class="balance-fields"><div class="field"><label for="oldbalanceOrg">Saldo previo de origen</label><div class="number-input"><span aria-hidden="true">$</span><input id="oldbalanceOrg" name="oldbalanceOrg" type="number" min="0" max="1000000000000" step="any" inputmode="decimal" placeholder="Ej. 10000" required></div></div><div class="field"><label for="oldbalanceDest">Saldo previo de destino</label><div class="number-input"><span aria-hidden="true">$</span><input id="oldbalanceDest" name="oldbalanceDest" type="number" min="0" max="1000000000000" step="any" inputmode="decimal" placeholder="Ej. 0" required></div></div></div>
+<p class="field-help">Saldos antes de la operación. Importes en las unidades monetarias del dataset.</p>
+<p id="form-error" class="inline-error" role="alert" hidden></p>
+<button class="primary-button" id="predict-button" type="submit"><span>Evaluar operación</span><span aria-hidden="true">↗</span></button></form>
+<div class="examples"><span class="small-label">O PROBÁ UN CASO DEL DATASET</span><div id="example-buttons" class="example-buttons"><span class="muted small">Cargando ejemplos…</span></div></div>
+</section>
+<section class="result-column" aria-labelledby="result-title">
+<div class="result-panel" id="result-panel" aria-live="polite" aria-atomic="true">
+<div class="result-top"><span class="step-label">02 / RESULTADO</span><span class="model-badge">ÁRBOL DE DECISIÓN</span></div>
+<div id="result-empty" class="result-empty"><svg viewBox="0 0 210 130" aria-hidden="true"><path d="M105 14V51M105 51H45V104M105 51H165V104" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="105" cy="14" r="10"/><circle cx="105" cy="51" r="5"/><rect x="31" y="93" width="28" height="24" rx="6"/><rect x="151" y="93" width="28" height="24" rx="6"/></svg><h2 id="result-title">Una operación.<br>Una decisión explicable.</h2><p>Completá los datos o cargá un ejemplo<br>para ver el resultado del modelo.</p></div>
+<div id="result-content" hidden></div>
+<div class="result-bottom"><span><span class="light-dot"></span> Variables previas a la operación</span><span>Umbral <strong>0,50</strong></span></div></div>
+<div class="result-footnote"><span class="info-icon">i</span><p>El puntaje representa la proporción de fraudes en la hoja del árbol. Se genera una alerta cuando es ≥ 0,50.</p></div>
+</section></div>
+<section id="explanation" hidden class="explanation-grid"></section>
+<section class="card history-card" aria-labelledby="history-title"><div class="section-heading"><div><span class="step-label">EN ESTA SESIÓN</span><h2 id="history-title">Últimas evaluaciones <span class="count-badge" id="history-count">0</span></h2></div><button class="text-button" id="clear-history" disabled>Vaciar historial</button></div><div id="history-empty" class="history-empty">Tus evaluaciones aparecerán acá. Podés recuperar un caso para cambiar sus datos y comparar.</div><div id="history-table" class="table-wrap" hidden></div><p class="privacy-note">Hasta 20 casos, solo en la memoria de esta pestaña. Se borran al recargar.</p></section>
+</section>
+<section id="metricas" role="tabpanel" aria-labelledby="tab-metricas" hidden>
+<div class="page-intro"><div><div class="eyebrow"><span class="tiny-line"></span> EVALUACIÓN DEL MODELO</div><h1>Los números detrás<br>de cada <em>decisión.</em></h1><p>Resultados calculados sobre las particiones originales de la notebook.</p></div></div>
+<div class="split-toolbar"><div class="segmented" role="group" aria-label="Partición de evaluación"><button data-split="test" aria-pressed="true">Prueba</button><button data-split="validation" aria-pressed="false">Validación</button><button data-split="train" aria-pressed="false">Entrenamiento</button></div><span class="small muted" id="split-description">Cargando métricas…</span></div>
+<div id="metric-cards" class="metric-grid"></div>
+<div class="analytics-grid"><section class="card"><div class="section-heading"><div><span class="step-label">CLASE REAL × PREDICCIÓN</span><h2>Matriz de confusión</h2></div></div><div id="confusion-matrix"></div></section><section class="card"><div class="section-heading"><div><span class="step-label">IMPORTANCIA GLOBAL</span><h2>Qué señales usa el árbol</h2></div></div><div id="importance-chart" class="importance-chart"></div><p class="chart-note">Importancias por reducción de impureza. No representan causalidad; las variables derivadas pueden compartir información.</p></section></div>
+<section class="card"><div class="section-heading"><div><span class="step-label">EL DATASET</span><h2>Una muestra desbalanceada</h2></div></div><div id="dataset-summary"></div></section>
+<section class="card"><div class="section-heading"><div><span class="step-label">EXPLORACIÓN EN VALIDACIÓN</span><h2>Qué cambia con el umbral</h2></div><span class="pill">La API conserva 0,50</span></div><div id="threshold-table" class="table-wrap"></div></section>
+</section>
+<section id="lote" role="tabpanel" aria-labelledby="tab-lote" hidden>
+<div class="page-intro"><div><div class="eyebrow"><span class="tiny-line"></span> EVALUACIÓN POR LOTE</div><h1>Más casos.<br>El mismo <em>criterio.</em></h1><p>Evaluá hasta 1.000 operaciones y descargá sus resultados.</p></div><button id="download-template" class="secondary-button">Descargar CSV de ejemplo <span aria-hidden="true">↓</span></button></div>
+<section class="card batch-card"><div class="upload-area"><span class="upload-symbol" aria-hidden="true">↥</span><h2>Cargá tus operaciones</h2><p>CSV en UTF-8, separado por comas. Máximo 2 MiB.</p><label class="secondary-button file-button" for="csv-file">Elegir archivo CSV</label><input id="csv-file" type="file" accept=".csv,text/csv" class="sr-only"><span id="file-name" class="small muted">Ningún archivo seleccionado</span></div><div class="csv-guide"><span class="step-label">CUATRO COLUMNAS, EN CUALQUIER ORDEN</span><code>type,amount,oldbalanceOrg,oldbalanceDest</code><p>Tipos válidos: CASH_IN, CASH_OUT, DEBIT, PAYMENT y TRANSFER. Usá punto para los decimales e importes sin separador de miles.</p><button class="primary-button" id="batch-button" disabled><span>Evaluar archivo</span><span aria-hidden="true">↗</span></button><p id="batch-error" class="inline-error" role="alert" hidden></p><p class="privacy-note">El archivo se procesa en memoria y no se guarda en el servidor.</p></div></section>
+<section id="batch-results" class="card" hidden><div class="section-heading"><div><span class="step-label">RESULTADOS</span><h2 id="batch-summary"></h2></div><button id="download-batch" class="secondary-button">Exportar resultados ↓</button></div><div id="batch-table" class="table-wrap"></div><div class="pagination"><button id="batch-prev" class="text-button">← Anterior</button><span id="batch-page" class="small muted"></span><button id="batch-next" class="text-button">Siguiente →</button></div></section>
+</section>
+<section id="modelo" role="tabpanel" aria-labelledby="tab-modelo" hidden>
+<div class="page-intro"><div><div class="eyebrow"><span class="tiny-line"></span> TRANSPARENCIA / REPRODUCIBILIDAD</div><h1>Un árbol.<br>Reglas <em>visibles.</em></h1><p>La configuración final del trabajo, de la notebook a la API.</p></div><a href="/docs" target="_blank" rel="noopener" class="secondary-button">Explorar API ↗</a></div>
+<div class="analytics-grid"><section class="card"><div class="section-heading"><div><span class="step-label">CONFIGURACIÓN FINAL</span><h2>Árbol con variables derivadas</h2></div></div><dl class="config-list"><div><dt>max_depth</dt><dd>20</dd></div><div><dt>min_samples_leaf</dt><dd>10</dd></div><div><dt>class_weight</dt><dd>None</dd></div><div><dt>Umbral</dt><dd>0,50</dd></div><div><dt>Semilla</dt><dd>42</dd></div><div><dt>Fracción remanente</dt><dd>0,01</dd></div></dl><p id="tree-details" class="chart-note"></p></section><section class="card"><div class="section-heading"><div><span class="step-label">60 / 20 / 20</span><h2>Cómo se entrenó</h2></div></div><div class="split-bar"><span>60%<small>Entrenamiento</small></span><span>20%<small>Validación</small></span><span>20%<small>Prueba</small></span></div><p class="body-copy">Particiones aleatorias estratificadas, semilla 42. Se conservan todas las filas y los cinco tipos de operación, sin muestreo ni balanceo artificial.</p><p class="body-copy">One-hot encoding para el tipo; variables numéricas sin escalar. Las categorías se aprenden únicamente con entrenamiento.</p><p class="body-copy">La API carga el modelo entrenado una vez y aplica las mismas fórmulas a cada caso nuevo.</p></section></div>
+<section class="card tree-card" aria-labelledby="tree-preview-title">
+<div class="section-heading"><div><span class="step-label">ESTRUCTURA DEL MODELO ENTRENADO</span><h2 id="tree-preview-title">Los primeros tres niveles</h2></div><span class="pill">Raíz + 2 niveles</span></div>
+<p class="tree-description" id="tree-preview-description">Seguí cada regla: a la izquierda se cumple (≤); a la derecha no se cumple (&gt;). Los conteos corresponden al conjunto de entrenamiento.</p>
+<div class="tree-legend"><span><i class="tree-swatch legitimate"></i>Predominio legítimo</span><span><i class="tree-swatch fraud"></i>Predominio de fraude</span><span class="tree-scroll-hint">↔ Desplazá el diagrama para explorar las ramas</span></div>
+<div id="tree-preview" class="tree-preview" role="status"><p class="muted small">Cargando estructura del árbol…</p></div>
+<p class="chart-note">La raíz cuenta como nivel 1. «Continúa» indica que hay decisiones en niveles posteriores; «Hoja final» indica que esa rama termina. Los umbrales se muestran redondeados; al pasar el cursor por un nodo podés consultar el valor exacto, los conteos por clase y Gini. Las proporciones de los nodos internos describen sus datos, no la decisión final de todos los casos.</p>
+</section>
+<section class="card"><div class="section-heading"><div><span class="step-label">DE 4 DATOS A 11 VARIABLES</span><h2>Las siete señales derivadas</h2></div></div><div class="table-wrap"><table><thead><tr><th>Variable</th><th>Cómo se calcula</th></tr></thead><tbody id="feature-definitions"></tbody></table></div><p class="chart-note">Se excluyen saldos posteriores, identificadores, índice, isFlaggedFraud y step. isFraud se usa únicamente como etiqueta.</p></section>
+</section>
+<footer><span><strong>umbral</strong> / Modelo de detección de fraude</span><span>Umbral fijo 0,50</span></footer>
+</main></body></html>
